@@ -1,1 +1,0 @@
-../../.agents/skills/metodos-numericos/SKILL.md

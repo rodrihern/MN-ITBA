@@ -2,7 +2,6 @@
 
 Nuestro objetivo es hallar $f(x) = 0$
 
----
 ## Biseccion
 
 ### Requisitos
@@ -195,3 +194,6 @@ Si nos interesa el error en cada uno de los pasos, cargamos la tabla
 ### Ejemplo
 
 ![](attachments/Pasted%20image%2020260630150703.png)
+
+---
+

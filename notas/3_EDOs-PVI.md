@@ -148,3 +148,8 @@ Calculamos los valores de cada $k_i$ por separado, los vamos guardando en las va
 
 ![](attachments/Pasted%20image%2020260630172700.png)
 
+---
+
+>[!note]
+> No incluyo las extensiones a sistemas de ecuaciones diferenciales porque no lo vi en ningun final y en los codigos de nash tampoco estan
+

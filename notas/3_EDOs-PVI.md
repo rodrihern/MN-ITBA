@@ -87,7 +87,7 @@ y los ponemos en una tabla
 
 ---
 
-## Heun orden 2
+## Heun de orden 2
 
 ### Metodo
 
@@ -99,6 +99,8 @@ donde
 - $k_1 = h \cdot f(t_k, y_k)$
 - $k_2 = h \cdot f(t_{k+1}, y_k + k_1)$
 
+>[!note]
+>Si la edo es lineal a coeficientes constantes, es igual que el Taylor de orden 2
 ### Errores
 
 Local y global $O(h^2)$
@@ -106,7 +108,7 @@ Local y global $O(h^2)$
 ### Calculadora
 
 1. Ingresamos el valor inicial y le damos a `=`
-2. Ponemos $$ans + h \cdot \frac{f(x, ans)}{f(x+h, ans+f(x,ans))}$$
+2. Ponemos $$ans + \frac{h}{2} \cdot (\ f(x, ans) + f(x+h, ans +h \cdot f(x, ans))\ ) $$
 3. apretamos `calc` y ponemos $x=t_k$ del renglon anterior
 
 y llenamos la tabla
@@ -114,3 +116,35 @@ y llenamos la tabla
 | $k$ | $t_k$ | $y_k$ |
 | --- | ----- | ----- |
 |     |       |       |
+### Ejemplo
+
+![](attachments/Pasted%20image%2020260630171149.png)
+
+---
+## Runge-Kutta de orden 4
+
+### Metodo
+
+Se parte del valor inical y se utiliza la formula
+$$
+y_{k+1} = y_k + \frac{1}{6} \cdot (k_1 + 2k_2 + 2k_3 + k_4)
+$$
+donde
+- $k_1 = h \cdot f(t_k, y_k)$
+- $k_2 = h \cdot f(t_{k} + \frac{h}{2}, y_k + \frac{k_1}{2})$
+- $k_3 = h \cdot f(t_{k} + \frac{h}{2}, y_k + \frac{k_2}{2})$
+- $k_4 = h \cdot f(t_{k+1}, y_k + k_3)$
+
+### Error
+
+$$E_{Local} = O(h^5)$$
+$$E_{Global} = O(h^4)$$
+
+### Calculadora
+
+Calculamos los valores de cada $k_i$ por separado, los vamos guardando en las variables de la calcu y los usamos luego en la formula, y hacemos eso por cada paso
+
+### Ejemplo 
+
+![](attachments/Pasted%20image%2020260630172700.png)
+

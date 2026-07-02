@@ -1,0 +1,12 @@
+filters:
+  and:
+    - file.inFolder("metodos")
+    - 'file.ext == "md"'
+    - 'materia != ""'
+
+views:
+  - type: table
+    name: "Notas"
+    order:
+      - file.name
+      - tipo

@@ -137,11 +137,14 @@ Si nos interesa el error hacemos la tabla
 
 Y vamos cargando la tabla
 
-| n   | $x_n$ | $E_n$ |
-| --- | ----- | ----- |
-|     |       |       |
+| n   | $x_n$ | $\|E_n\|$ |
+| --- | ----- | --------- |
+|     |       |           |
 
-
+>[!TIP]
+>Si nos interesa un error menor a $10^{-k}$ podemos hacer las iteraciones hasta que los primeros k decimales no cambian.
+>
+ (condicion suficiente, no necesaria). podria pasar que no coincidan y tengamos un error menor al deseado
 
 ### Ejemplo
 
@@ -184,24 +187,37 @@ $$
 
 ### Calculadora
 
-1. Ingresamos `x0` ponemos `=`
+Luego si queremos hacer un numero definido de iteraciones
+
+1. pongo el valor de $x_0$ y le damos a `=`
 2. cargamos $g(ans)$
 3. spameamos `=` hasta terminar
 
 y cargamos la tabla
 
-| n   | $x_n$ |
+| $n$ | $x_n$ |
 | --- | ----- |
 |     |       |
 
-Si nos interesa el error en cada uno de los pasos, cargamos la tabla
+Si nos interesa el error hacemos la tabla
 
-| n   | $x_n$ | $f(x_n)$ | $f'(x_n)$ | $E_n$ |
-| --- | ----- | -------- | --------- | ----- |
-|     |       |          |           |       |
+1. cargamos $g(x)$
+2. le damos a `calc` y ponemos en x el valor de $x_0$
+3. guardamos el valor de respuesta en la variable `A`
+4. hacemos $A-x$ para ver el error
+5. Si el error es menor al deseado terminamos
+6. Sino volvemos al paso 2. pero cuando tocamos `calc` cargamos el valor de `A`
+
+Y vamos cargando la tabla
+
+| n   | $x_n$ | $\|E_n\|$ |
+| --- | ----- | --------- |
+|     |       |           |
 
 >[!TIP]
 >Si nos interesa un error menor a $10^{-k}$ hacemos las iteraciones hasta que los primeros k decimales no cambian
+>
+>(condicion suficiente, no necesaria). podria pasar que no coincidan y tengamos un error menor al deseado
 
 ### Ejemplo
 

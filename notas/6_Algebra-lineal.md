@@ -91,6 +91,8 @@ $$
 |a_{ii}| \ge \sum_{j \neq i} |a_{ij}| \quad \text{en cada fila}
 $$
 
+osea que el coeficiente de la variable que estamos despejando debe "pesar" mas que todos los demas juntos
+
 > [!TIP]
 > Si no converge, a veces **reordenar las ecuaciones** (cambiar el orden de las filas) vuelve dominante la diagonal y entonces sí converge. El mismo sistema puede converger o divergir según el orden.
 
@@ -125,13 +127,14 @@ $$
 
 1. Despejar cada $x_i$ de su ecuación.
 2. Arrancar de $x^{(0)} = (0, \dots, 0)$.
-3. Calcular **todas** las nuevas $x_i$ con los valores viejos, recién ahí pasar al paso siguiente.
-4. Cargar la tabla hasta la precisión pedida (típico: que no cambien los primeros $k$ decimales).
+3. Calcular **todas** las nuevas $x_i$ y las guardamos en variables
+4. actualizamos las $x_i$ con las variables
+5. Repetimos hasta llegar a la presicion pedida
 
 | $k$ | $x_1$ | $x_2$ | $\dots$ |
 | --- | ----- | ----- | ------- |
 |     |       |       |         |
-Lo que podemos hacer en la calcu es usar variables (1) para las cuentas, y despues otras variables (2) para ir guardando los resultados. Al final de cada iteracion actualizamos los valores de las variables (1) con los valores que guardamos en las variables (2) para la siguiente iteracon
+
 ### Ejemplo
 
 $$
@@ -175,8 +178,16 @@ $$
 
 ### Calculadora
 
-Igual que Jacobi, con la diferencia clave del paso 3: al calcular $x_i^{(k+1)}$ **ya usás las $x$ nuevas** que calculaste recién en este paso, no las del anterior.
+Igual que Jacobi, con la diferencia clave del paso 3: En lugar de guardarlas en otras variables, actualizamos las propias $x_i$. osea que queda
 
+1. Despejar cada $x_i$ de su ecuación.
+2. Arrancar de $x^{(0)} = (0, \dots, 0)$.
+3. Calcular las nuevas $x_i$ y vamos actualizando sus valores a medida que las calculamos
+4. Repetimos hasta llegar a la presicion pedida
+
+| $k$ | $x_1$ | $x_2$ | $\dots$ |
+| --- | ----- | ----- | ------- |
+|     |       |       |         |
 ### Ejemplo
 
 Mismo sistema que en Jacobi, partiendo de $(0,0)$ (ahora $x_2$ usa el $x_1$ recién calculado):

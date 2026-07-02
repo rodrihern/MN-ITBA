@@ -108,34 +108,46 @@ $$
 
 ### Calculadora
 
-1. pongo `x0` y le damos a `=`
+Definimos $x_0$ tal que
+
+$$
+f(x_0) \cdot f''(x_0) > 0
+$$
+
+Luego si queremos hacer un numero definido de iteraciones
+
+1. pongo el valor de $x_0$ y le damos a `=`
 2. cargamos $ans - \frac{f(ans)}{f'(ans)}$
 3. spameamos `=` hasta terminar
 
 y cargamos la tabla
 
-| n   | $x_n$ |
+| $n$ | $x_n$ |
 | --- | ----- |
 |     |       |
 
 Si nos interesa el error hacemos la tabla
 
-| n   | $x_n$ | $f(x_n)$ | $f'(x_n)$ | $E_n$ |
-| --- | ----- | -------- | --------- | ----- |
-|     |       |          |           |       |
+1. cargamos $x-\frac{f(x)}{f'(x)}$
+2. le damos a `calc` y ponemos en x el valor de $x_0$
+3. guardamos el valor de respuesta en la variable `A`
+4. hacemos $A-x$ para ver el error
+5. Si el error es menor al deseado terminamos
+6. Sino volvemos al paso 2. pero cuando tocamos `calc` cargamos el valor de `A`
 
->[!TIP]
->Si nos interesa un error menor a $10^{-k}$ hacemos las iteraciones hasta que los primeros k decimales no cambian
+Y vamos cargando la tabla
 
->[!TIP]
->No se si funciona siempre pero para elegir el extremo podemos elegir uno al azar y si no converge, cambiamos. Si converge rapido es que lo elegimos bien
+| n   | $x_n$ | $E_n$ |
+| --- | ----- | ----- |
+|     |       |       |
+
 
 
 ### Ejemplo
 
 ![](attachments/Pasted%20image%2020260630134721.png)
 
-tambien seria lo mismo si quisieramos un error de $10^{-4}$ (habian mas decimales en las respuestas)
+
 
 ---
 ## Metodo de puntos fijos

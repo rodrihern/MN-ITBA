@@ -1,5 +1,6 @@
 import argparse
 import math
+import sys
 
 # Define parameters
 A = 1
@@ -10,7 +11,6 @@ FUNCTION = "x**3 - x - 2"
 
 
 ALLOWED_NAMES = {name: getattr(math, name) for name in dir(math) if not name.startswith("_")}
-ALLOWED_NAMES["math"] = math
 ALLOWED_NAMES["abs"] = abs
 
 
@@ -87,7 +87,11 @@ def bisection(function, a, b, iterations, error, verbose=False):
 
 
 args = parse_args()
-result = bisection(args.function, args.a, args.b, args.iterations, args.error, args.verbose)
+try:
+    result = bisection(args.function, args.a, args.b, args.iterations, args.error, args.verbose)
+except ValueError as exc:
+    print(f"Error: {exc}", file=sys.stderr)
+    sys.exit(1)
 
 if args.verbose:
     print()

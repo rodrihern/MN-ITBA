@@ -19,7 +19,13 @@ Los scripts nuevos se corren desde `/Users/rodri/ITBA/metodos`.
 |---|---|---|
 | Biseccion | `1_Ecuaciones-no-lineales/biseccion.py` | `-f`, `-a`, `-b`, `-i`, `-e`, `-v` |
 | Newton | `1_Ecuaciones-no-lineales/newton-raphson.py` | `-f`, `-d`, `-s`, `-x`, `-a`, `-b`, `-i`, `-e`, `-v` |
-| Punto fijo | `1_Ecuaciones-no-lineales/punto_fijo.py` | `-g`, `-x`, `-a`, `-b`, `-i`, `-e`, `-v` |
+| Punto fijo | `1_Ecuaciones-no-lineales/punto_fijo.py` | `-f`, `-x`, `-a`, `-b`, `-i`, `-e`, `-v` |
+| Euler | `2_edos-pvi/euler.py` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Heun orden 2 | `2_edos-pvi/heun2.py` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Taylor orden 2 | `2_edos-pvi/taylor2.py` | `-f`, `-d`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Runge-Kutta orden 4 | `2_edos-pvi/runge-kutta4.py` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Interpolacion Lagrange | `3_interpolacion/lagrange.py` | `-x`, `-y`, `-p`, `-e`, `-v` |
+| Interpolacion Newton | `3_interpolacion/newton.py` | `-x`, `-y`, `-p`, `-e`, `-v` |
 
 ## Convenciones para codigo nuevo
 
@@ -29,9 +35,13 @@ Todo script nuevo o migrado desde `codigos_nash` debe seguir este formato:
 - Definir parametros editables arriba del archivo en mayusculas, por ejemplo `A`, `B`, `X0`, `Y0`, `H`, `ITERATIONS`, `ERROR`, `FUNCTION`.
 - Usar esos parametros como defaults de `argparse`, para que el script funcione tanto editando el archivo como pasando argumentos.
 - Separar el codigo en funciones: `parse_args()`, una funcion del metodo numerico, y helpers como `build_function(...)` o `build_functions(...)` si hacen falta.
+- Reutilizar helpers comunes de la carpeta en `utils.py` cuando reduzcan duplicacion clara, por ejemplo parsing de puntos, funciones matematicas seguras, validaciones compartidas o tablas verbose. No mover la formula principal del metodo ni forzar un parser generico si los argumentos del metodo son distintos.
+- En scripts de ecuaciones no lineales, usar `-f` / `--function` como argumento principal para la funcion de iteracion o evaluacion. En punto fijo, `-f` debe documentar claramente que recibe `g(x)` para `x = g(x)`, no la funcion original `f(x) = 0`.
+- En scripts de interpolacion, mantener la interfaz comun `-p` / `--points` para puntos, `-e` / `--eval` para evaluar el polinomio, y `-v` / `--verbose` para mostrar la tabla o terminos auxiliares. Aceptar puntos como `0,1` y como `"(0,1)"`; si hay valores negativos con parentesis, recordar que se deben pasar entre comillas por el shell.
 - Al final del archivo, parsear argumentos, ejecutar el metodo e imprimir el resultado.
 - Agregar `-v` / `--verbose` para mostrar tabla de iteraciones o pasos.
 - Sin `-v`, imprimir solamente el resultado final que se debe usar.
+- En metodos de PVI, la tabla de `--verbose` debe seguir la tabla del apartado `### Calculadora` del metodo correspondiente en `notas/` (por ejemplo, para Euler, Taylor 2 y Heun: `k`, `t_k`, `y_k`).
 - Si el metodo acepta corte por iteraciones y por error/tolerancia, las condiciones deben ser exclusivas:
   - Si el usuario pasa `-e` / `--error`, ignorar iteraciones y cortar solo por error.
   - Si el usuario no pasa error, cortar solo por iteraciones.
@@ -47,6 +57,16 @@ Todo script nuevo o migrado desde `codigos_nash` debe seguir este formato:
 print(f"{'n':<3} | {'x_n':<20} | {'E_n':<20}")
 print(f"{n:<3} | {x:<20.12g} | {error:<20.12g}")
 ```
+
+## Helpers por carpeta
+
+Usar helpers de `utils.py` solo dentro de la carpeta del tema correspondiente.
+
+- `1_Ecuaciones-no-lineales/utils.py`: funciones matematicas seguras en variable `x`, argumento comun `-f` / `--function`, validacion de `-i` / `-e`, validacion de intervalo opcional.
+- `2_edos-pvi/utils.py`: funciones matematicas seguras en variables `t` e `y`, argumentos comunes de PVI (`-a`, `-b`, `-y`, `-H`, `-f`, `-i`, `-v`), resolucion de pasos, validacion de valores finitos y tabla verbose `k | t_k | y_k`.
+- `3_interpolacion/utils.py`: parsing comun de puntos y listas para `-p`, `-x`, `-y`, `-e`, `-v`.
+
+No importar helpers entre carpetas distintas si eso mezcla convenciones de variables o argumentos. Por ejemplo, `build_function` de ecuaciones no lineales usa `x`, mientras que el de PVI usa `t, y`.
 
 ## Verificacion obligatoria de codigo nuevo
 
@@ -107,14 +127,56 @@ Punto fijo por iteraciones:
 
 ```bash
 cd /Users/rodri/ITBA/metodos
-python3 1_Ecuaciones-no-lineales/punto_fijo.py -g "(x + 1)**(1/3)" -x 1 -i 5 -v
+python3 1_Ecuaciones-no-lineales/punto_fijo.py -f "(x + 1)**(1/3)" -x 1 -i 5 -v
 ```
 
 Punto fijo por error, ignorando iteraciones:
 
 ```bash
 cd /Users/rodri/ITBA/metodos
-python3 1_Ecuaciones-no-lineales/punto_fijo.py -g "sqrt((10 - x**3)/4)" -x 1 -a 1 -b 2 -e 0.00001 -v
+python3 1_Ecuaciones-no-lineales/punto_fijo.py -f "sqrt((10 - x**3)/4)" -x 1 -a 1 -b 2 -e 0.00001 -v
+```
+
+Euler:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 2_edos-pvi/euler.py -f "(t - y) / 2" -a 0 -b 3 -y 1 -H 0.5 -v
+```
+
+Heun orden 2:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 2_edos-pvi/heun2.py -f "t - y" -a 0 -b 1 -y 3 -H 0.1 -v
+```
+
+Taylor orden 2 con derivada automatica:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 2_edos-pvi/taylor2.py -f "1 + y**2" -a 0 -b 1 -y 1 -H 0.2 -v
+```
+
+Runge-Kutta orden 4:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 2_edos-pvi/runge-kutta4.py -f "y * (sin(t))**3" -a 0 -b 3 -y 1 -H 0.5 -v
+```
+
+Interpolacion de Newton con puntos:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 3_interpolacion/newton.py -p 0,0.25 1,0.55 2,0.35 3,2.65 -v
+```
+
+Interpolacion de Lagrange evaluando el polinomio:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 3_interpolacion/lagrange.py -p 0,0.25 1,0.55 2,0.35 3,2.65 -e 1.5
 ```
 
 ## Archivos legacy de codigos_nash

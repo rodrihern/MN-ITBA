@@ -1,7 +1,8 @@
 import argparse
-import math
 import sys
 import sympy as sp
+
+from utils import ALLOWED_NAMES, add_function_argument, validate_iteration_args
 
 # Define parameters
 A = 1
@@ -14,8 +15,6 @@ DERIVATIVE = None
 SECOND_DERIVATIVE = None
 
 
-ALLOWED_NAMES = {name: getattr(math, name) for name in dir(math) if not name.startswith("_")}
-ALLOWED_NAMES["abs"] = abs
 SYMPY_NAMES = {name: getattr(sp, name) for name in dir(sp) if not name.startswith("_")}
 SYMPY_NAMES["abs"] = sp.Abs
 
@@ -40,7 +39,7 @@ def parse_args():
     parser.add_argument("-a", type=float, default=A, help="Extremo izquierdo usado si no se indica x0")
     parser.add_argument("-b", type=float, default=B, help="Extremo derecho usado si no se indica x0")
     parser.add_argument("-x", "--x0", type=float, default=X0, help="Valor inicial")
-    parser.add_argument("-f", "--function", default=FUNCTION, help="Funcion en terminos de x")
+    add_function_argument(parser, FUNCTION)
     parser.add_argument("-d", "--derivative", default=DERIVATIVE, help="Derivada en terminos de x. Si no se indica, se calcula con sympy")
     parser.add_argument("-s", "--second-derivative", default=SECOND_DERIVATIVE, help="Segunda derivada en terminos de x. Si no se indica, se calcula con sympy")
     parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS, help="Cantidad de iteraciones")
@@ -48,10 +47,7 @@ def parse_args():
     parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla de iteraciones")
     args = parser.parse_args()
 
-    if args.error is not None and args.error <= 0:
-        parser.error("--error debe ser mayor a 0")
-    if args.error is None and args.iterations < 0:
-        parser.error("--iterations debe ser mayor o igual a 0")
+    validate_iteration_args(parser, args)
 
     try:
         args.function, args.derivative, args.second_derivative = build_functions(

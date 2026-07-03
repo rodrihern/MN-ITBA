@@ -26,6 +26,9 @@ Los scripts nuevos se corren desde `/Users/rodri/ITBA/metodos`.
 | Runge-Kutta orden 4 | `2_edos-pvi/runge-kutta4.py` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
 | Interpolacion Lagrange | `3_interpolacion/lagrange.py` | `-x`, `-y`, `-p`, `-e`, `-v` |
 | Interpolacion Newton | `3_interpolacion/newton.py` | `-x`, `-y`, `-p`, `-e`, `-v` |
+| Rectangulo | `4_integracion/rectangulo.py` | `-f`, `-a`, `-b`, `-n`, `-m`, `-v` |
+| Trapecio | `4_integracion/trapecio.py` | `-f`, `-a`, `-b`, `-n`, `-v` |
+| Simpson 1/3 | `4_integracion/simpson.py` | `-f`, `-a`, `-b`, `-n`, `-v` |
 
 ## Convenciones para codigo nuevo
 
@@ -35,7 +38,9 @@ Todo script nuevo o migrado desde `codigos_nash` debe seguir este formato:
 - Definir parametros editables arriba del archivo en mayusculas, por ejemplo `A`, `B`, `X0`, `Y0`, `H`, `ITERATIONS`, `ERROR`, `FUNCTION`.
 - Usar esos parametros como defaults de `argparse`, para que el script funcione tanto editando el archivo como pasando argumentos.
 - Separar el codigo en funciones: `parse_args()`, una funcion del metodo numerico, y helpers como `build_function(...)` o `build_functions(...)` si hacen falta.
-- Reutilizar helpers comunes de la carpeta en `utils.py` cuando reduzcan duplicacion clara, por ejemplo parsing de puntos, funciones matematicas seguras, validaciones compartidas o tablas verbose. No mover la formula principal del metodo ni forzar un parser generico si los argumentos del metodo son distintos.
+- Reutilizar helpers comunes de la carpeta en `utils.py` cuando reduzcan duplicacion clara, por ejemplo parsing de puntos, funciones matematicas seguras, validaciones compartidas, argumentos CLI repetidos o tablas verbose.
+- Si varios scripts de una misma carpeta comparten interfaz, extraer el armado de esos argumentos a helpers tipo `add_*_arguments(...)` o `resolve_*_args(...)`. Cada script debe seguir mostrando en `--help` solamente los argumentos que realmente usa.
+- No mover la formula principal del metodo a `utils.py` ni forzar un parser generico si los argumentos del metodo son distintos. Es preferible tener helpers chicos y componibles antes que un parser comun que acepte flags que despues se ignoran.
 - En scripts de ecuaciones no lineales, usar `-f` / `--function` como argumento principal para la funcion de iteracion o evaluacion. En punto fijo, `-f` debe documentar claramente que recibe `g(x)` para `x = g(x)`, no la funcion original `f(x) = 0`.
 - En scripts de interpolacion, mantener la interfaz comun `-p` / `--points` para puntos, `-e` / `--eval` para evaluar el polinomio, y `-v` / `--verbose` para mostrar la tabla o terminos auxiliares. Aceptar puntos como `0,1` y como `"(0,1)"`; si hay valores negativos con parentesis, recordar que se deben pasar entre comillas por el shell.
 - Al final del archivo, parsear argumentos, ejecutar el metodo e imprimir el resultado.
@@ -65,6 +70,7 @@ Usar helpers de `utils.py` solo dentro de la carpeta del tema correspondiente.
 - `1_Ecuaciones-no-lineales/utils.py`: funciones matematicas seguras en variable `x`, argumento comun `-f` / `--function`, validacion de `-i` / `-e`, validacion de intervalo opcional.
 - `2_edos-pvi/utils.py`: funciones matematicas seguras en variables `t` e `y`, argumentos comunes de PVI (`-a`, `-b`, `-y`, `-H`, `-f`, `-i`, `-v`), resolucion de pasos, validacion de valores finitos y tabla verbose `k | t_k | y_k`.
 - `3_interpolacion/utils.py`: parsing comun de puntos y listas para `-p`, `-x`, `-y`, `-e`, `-v`.
+- `4_integracion/utils.py`: funciones matematicas seguras en variable `x`, argumento comun `-f` / `--function`, validacion de intervalo, validacion de `-n` y tablas verbose.
 
 No importar helpers entre carpetas distintas si eso mezcla convenciones de variables o argumentos. Por ejemplo, `build_function` de ecuaciones no lineales usa `x`, mientras que el de PVI usa `t, y`.
 
@@ -177,6 +183,48 @@ Interpolacion de Lagrange evaluando el polinomio:
 ```bash
 cd /Users/rodri/ITBA/metodos
 python3 3_interpolacion/lagrange.py -p 0,0.25 1,0.55 2,0.35 3,2.65 -e 1.5
+```
+
+Rectangulo simple con punto medio (`-n 1`):
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/rectangulo.py -f "exp(x)" -a 0 -b 1 -n 1 -m midpoint -v
+```
+
+Rectangulo compuesto:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/rectangulo.py -f "exp(x)" -a 0 -b 1 -n 4 -m midpoint -v
+```
+
+Trapecio simple (`-n 1`):
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/trapecio.py -f "log(x+2)" -a 2 -b 4 -n 1 -v
+```
+
+Trapecio compuesto:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/trapecio.py -f "log(x+2)" -a 2 -b 4 -n 4 -v
+```
+
+Simpson 1/3 simple (`-n 1`, un panel de Simpson):
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/simpson.py -f "x**2 * exp(-x**2)" -a 0 -b 1 -n 1 -v
+```
+
+Simpson 1/3 compuesto (`-n` indica cantidad de paneles de Simpson, cada panel usa 2 subintervalos):
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/simpson.py -f "x**2 * exp(-x**2)" -a 0 -b 1 -n 2 -v
 ```
 
 ## Archivos legacy de codigos_nash

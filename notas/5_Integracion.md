@@ -20,28 +20,8 @@ Para mejorar la aproximación se **aumenta el número de puntos**: se divide $[a
 
 ---
 
-## Reglas cuadratura simple
-
-$N$ = número de puntos. Son fórmulas de **una sola cuenta**. $M$ es el orden de precisión (ver abajo).
-
-| $N$ | Regla | Fórmula | $M$ |
-|---|---|---|---|
-| 1 | Rectángulo izquierda | $(b-a)\,f(a)$ | $0$ |
-| 1 | Rectángulo derecha | $(b-a)\,f(b)$ | $0$ |
-| 1 | Punto medio (= Gauss 1 punto) | $(b-a)\,f\!\left(\tfrac{a+b}{2}\right)$ | $1$ |
-| 2 | Trapecio | $\tfrac{b-a}{2}\big(f(a)+f(b)\big)$ | $1$ |
-| 3 | Simpson 1/3 | $\tfrac{b-a}{6}\big(f(a)+4f(\tfrac{a+b}{2})+f(b)\big)$ | $3$ |
-| 4 | Simpson 3/8 | $\tfrac{b-a}{8}\big(f(a)+3f(x_1)+3f(x_2)+f(b)\big)$ | $3$ |
-| 5 | Boole | $\tfrac{b-a}{90}\big(7f(a)+32f(x_1)+12f(x_2)+32f(x_3)+7f(b)\big)$ | $5$ |
-
-> [!NOTE] Simpson = trapecio + punto medio
-> $$I_S = \tfrac{1}{3}\,I_T + \tfrac{2}{3}\,I_{PM}$$
-> (Simpson 3/8 y Boole casi no se toman; están por completitud.)
-
----
 ## Orden de precisión M
 
-### Metodo
 
 $M$ = **máximo grado de polinomio para el cual la fórmula es exacta** ($E[f]=0$). Se verifica integrando $1, x, x^2, \dots$ hasta que la fórmula deje de dar el valor exacto.
 
@@ -62,7 +42,19 @@ $M$ = **máximo grado de polinomio para el cual la fórmula es exacta** ($E[f]=0
 
 ### Metodo
 
-Aproxima $f$ por una **constante** en cada tramo (la altura de un rectángulo). Sobre $[a,b]$ partido en $n$ subintervalos ($h=\tfrac{b-a}{n}$), hay tres variantes según qué punto se use como altura:
+Aproxima $f$ por una **constante** en cada tramo (la altura de un rectángulo). Hay tres variantes según qué punto se use como altura.
+
+**Regla simple** (una sola evaluación sobre todo $[a,b]$):
+
+$$
+\begin{aligned}
+\text{Izquierda:}\quad & I \approx (b-a)\,f(a) & (M=0)\\
+\text{Derecha:}\quad & I \approx (b-a)\,f(b) & (M=0)\\
+\text{Punto medio (= Gauss 1 punto):}\quad & I \approx (b-a)\,f\!\left(\tfrac{a+b}{2}\right) & (M=1)
+\end{aligned}
+$$
+
+**Compuesta**, sobre $[a,b]$ partido en $n$ subintervalos ($h=\tfrac{b-a}{n}$):
 
 $$
 \begin{aligned}
@@ -80,10 +72,10 @@ El **punto medio** es el más preciso de los tres (es la regla de Gauss de 1 pun
 2. Evaluar $f$ en el punto que corresponda (extremo izquierdo, derecho o medio de cada tramo).
 3. Sumar todo y multiplicar por $h$.
 
-| $k$ | tramo | punto usado | $f(\cdot)$ |
-| --- | ----- | ----------- | ---------- |
-|     |       |             |            |
-
+| $k$ | $x$ | $f(x)$ |
+| --- | --- | ------ |
+|     |     |        |
+y al final hacer la suma
 ### Ejemplo
 
 $\displaystyle\int_0^1 e^x\,dx$ con $n=4$ ($h=0{,}25$), exacto $= e-1 \approx 1{,}71828$:
@@ -100,7 +92,15 @@ $\displaystyle\int_0^1 e^x\,dx$ con $n=4$ ($h=0{,}25$), exacto $= e-1 \approx 1{
 
 ### Metodo
 
-Aproxima $f$ por una recta en cada tramo. Sobre $[a,b]$ partido en $n$ subintervalos:
+Aproxima $f$ por una recta en cada tramo.
+
+**Regla simple** ($M=1$):
+
+$$
+T[f] = \tfrac{b-a}{2}\big(f(a)+f(b)\big)
+$$
+
+**Compuesta**, sobre $[a,b]$ partido en $n$ subintervalos:
 
 $$
 T_n[f] = \frac{h}{2}\Big(\underbrace{f(a)+f(b)}_{E} + 2\underbrace{\textstyle\sum_{k=1}^{n-1} f(x_k)}_{\text{internos}}\Big), \qquad |I - T_n| = \frac{b-a}{12}\,h^2\,|f''(\xi)|
@@ -117,6 +117,7 @@ $$
 | --- | ----- | -------- |
 |     |       |          |
 
+y al final hacer la suma
 ### Ejemplo
 
 $\displaystyle\int_2^4 \ln(x+2)\,dx$ con $n=4$ ($h=0{,}5$):
@@ -137,25 +138,44 @@ $$
 
 ### Metodo
 
-Aproxima $f$ por parábolas. Necesita $n$ **par**. Separando los internos en índices impares y pares:
+Aproxima $f$ por parábolas.
 
-![](attachments/Pasted%20image%2020260701175519.png)
+**Regla simple** — Simpson 1/3 ($M=3$):
 
 $$
-S_n[f] = \frac{h}{3}\Big(\underbrace{f(a)+f(b)}_{E} + 4\underbrace{\textstyle\sum_{\text{impares}} f(x_k)}_{IM} + 2\underbrace{\textstyle\sum_{\text{pares}} f(x_k)}_{P}\Big), \qquad |I - S_n| = \frac{b-a}{180}\,h^4\,|f^{(4)}(\xi)|
+S[f] = \tfrac{b-a}{6}\big(f(a)+4f(\tfrac{a+b}{2})+f(b)\big)
 $$
+
+> [!NOTE] Simpson = trapecio + punto medio
+> $$I_S = \tfrac{1}{3}\,I_T + \tfrac{2}{3}\,I_{PM}$$
+
+Variantes de más puntos (casi no se toman; están por completitud):
+
+- **Simpson 3/8** ($M=3$): $\tfrac{b-a}{8}\big(f(a)+3f(x_1)+3f(x_2)+f(b)\big)$
+- **Boole** ($M=5$): $\tfrac{b-a}{90}\big(7f(a)+32f(x_1)+12f(x_2)+32f(x_3)+7f(b)\big)$
+
+**Compuesta**. Necesita $n$ **par**. Separando los internos en índices impares y pares:
+
+Tenemos el intervalo $[x_0, x_n]$ con los $x_k$ itnermedios con $1 \le k \le n-1$
+$$
+A = \frac{h}{3}\Big(f(x_0) + 4\textstyle\sum_{\text{impares}} f(x_k) + 2\textstyle\sum_{\text{pares}} f(x_k)+ f(x_n)\Big)
+$$
+Para 6 puntos queda
+$$
+A = \frac{h}{3}\Big( f(x_0) + 4f(x_1) + 2f(x_2) + 4f(x_3) + 2f(x_4) + 4f(x_5) + f(x_6) \Big)
+$$
+
 
 ### Calculadora
 
-1. Calcular $h=\tfrac{b-a}{n}$ ($n$ par) y los nodos.
+1. Calcular $h=\tfrac{b-a}{n}$ ($n$ par).
 2. Armar la tabla de $x_k$ y $f(x_k)$.
-3. Sumar: extremos peso $1$; internos de índice **impar** peso $4$; de índice **par** peso $2$.
-4. Multiplicar por $\tfrac{h}{3}$.
+3. Multiplicar por $\tfrac{h}{3}$.
 
-| $k$ | $x_k$ | $f(x_k)$ | peso |
-| --- | ----- | -------- | ---- |
-|     |       |          |      |
-
+| $k$ | $x_k$ | $f(x_k)$ |
+| --- | ----- | -------- |
+|     |       |          |
+y al final hacer la suma
 ### Ejemplo
 
 $\displaystyle\int_0^1 t^2 e^{-t^2}\,dt$ con $n=4$ ($h=0{,}25$):

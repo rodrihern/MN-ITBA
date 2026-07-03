@@ -49,9 +49,9 @@ Terminamos cuando completamos la cantidad de pasos deseada o llegamos a la cota 
 
 Mientras lo hacemos vamos cargando la siguiente tabla
 
-| n   | a   | b   | x   | f(x) |
-| --- | --- | --- | --- | ---- |
-|     |     |     |     |      |
+| $n$ | $a_n$ | $b_n$ | $x_n$ | $f(x_n)$ |
+| --- | ----- | ----- | ----- | -------- |
+|     |       |       |       |          |
 
 Podriamos agregar una columna extra para el error si quisieramos
 
@@ -78,7 +78,7 @@ n    a           b          x_n          f(x_n)         cota error
 
 
 ---
-## Metodo de Newton
+## Metodo de Newton-Raphson
 
 ### Requisitos
 

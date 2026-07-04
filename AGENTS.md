@@ -45,6 +45,7 @@ Todo script nuevo debe seguir este formato:
   5. Parseo de argumentos y llamado a la funcion del metodo.
 - Definir parametros editables arriba del archivo en mayusculas, por ejemplo `A`, `B`, `X0`, `Y0`, `H`, `ITERATIONS`, `ERROR`, `FUNCTION`.
 - Usar esos parametros como defaults de `argparse`, para que el script funcione tanto editando el archivo como pasando argumentos.
+- Mantener los parametros opcionales (por ejemplo derivadas, `X0`, `INITIAL`, o `ITERATIONS`/`ERROR`) y comentarlos en linea con un `# Optional: ...` corto que aclare que pasa cuando quedan en `None`, por ejemplo si se calculan solos o si activan otro modo de corte. El `help=` de `argparse` documenta el uso por CLI; el comentario es para quien edita el archivo directamente.
 - La funcion del metodo se nombra como el archivo pero en ingles y con sufijo `_method`, por ejemplo `biseccion.py` -> `bisection_method`, `punto_fijo.py` -> `fixed_point_method`, `trapecio.py` -> `trapezoid_method`. Si el nombre del archivo lleva numero de orden, mantenerlo (`heun2.py` -> `heun2_method`).
 - Separar el codigo en funciones: la funcion del metodo numerico, `parse_args()`, y helpers como `build_function(...)` o `build_functions(...)` si hacen falta. Como Python resuelve nombres al momento de la llamada, los helpers pueden ir despues de la funcion del metodo aunque esta los use.
 - Reutilizar helpers comunes de la carpeta en `utils.py` cuando reduzcan duplicacion clara, por ejemplo parsing de puntos, funciones matematicas seguras, validaciones compartidas, argumentos CLI repetidos o tablas verbose.

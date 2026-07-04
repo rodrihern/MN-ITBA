@@ -6,10 +6,10 @@ from utils import add_function_argument, build_function, validate_iteration_args
 
 # Define parameters
 X0 = 1
-A = None
-B = None
+A = None  # Optional: interval bound to validate iterates (use together with B)
+B = None  # Optional: interval bound to validate iterates (use together with A)
 ITERATIONS = 5
-ERROR = None
+ERROR = None  # Optional: if set, cut by error and ignore ITERATIONS
 FUNCTION = "(x + 1)**(1/3)"
 
 

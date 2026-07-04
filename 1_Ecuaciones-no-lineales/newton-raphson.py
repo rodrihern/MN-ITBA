@@ -7,12 +7,12 @@ from utils import ALLOWED_NAMES, add_function_argument, validate_iteration_args
 # Define parameters
 A = 1
 B = 2
-X0 = None
+X0 = None  # Optional: if None, chosen from [A, B] where f(x)*f''(x) > 0
 ITERATIONS = 5
-ERROR = None
+ERROR = None  # Optional: if set, cut by error and ignore ITERATIONS
 FUNCTION = "x**3 - x - 2"
-DERIVATIVE = None
-SECOND_DERIVATIVE = None
+DERIVATIVE = None  # Optional: if None, computed with sympy
+SECOND_DERIVATIVE = None  # Optional: if None, computed with sympy
 
 
 def newton_raphson_method(function, derivative, x0, iterations, error, verbose=False):

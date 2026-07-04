@@ -7,7 +7,7 @@ from utils import add_function_argument, build_function, validate_iteration_args
 A = 1
 B = 2
 ITERATIONS = 5
-ERROR = None
+ERROR = None  # Optional: if set, cut by error and ignore ITERATIONS
 FUNCTION = "x**3 - x - 2"
 
 def bisection_method(function, a, b, iterations, error, verbose=False):

@@ -20,9 +20,9 @@ from utils import (
 # Define parameters
 MATRIX = "2,1; 1,-2"
 VECTOR = "8,-1"
-INITIAL = None
+INITIAL = None  # Optional: if None, uses a zero vector
 ITERATIONS = 3
-ERROR = None
+ERROR = None  # Optional: if set, cut by error and ignore ITERATIONS
 
 
 def jacobi_method(matrix, vector, initial, iterations, error, verbose=False):

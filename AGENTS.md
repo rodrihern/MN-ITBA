@@ -29,6 +29,10 @@ Los scripts nuevos se corren desde `/Users/rodri/ITBA/metodos`.
 | Rectangulo | `4_integracion/rectangulo.py` | `-f`, `-a`, `-b`, `-n`, `-m`, `-v` |
 | Trapecio | `4_integracion/trapecio.py` | `-f`, `-a`, `-b`, `-n`, `-v` |
 | Simpson 1/3 | `4_integracion/simpson.py` | `-f`, `-a`, `-b`, `-n`, `-v` |
+| Gauss-Legendre | `4_integracion/gauss_legendre.py` | `-f`, `-a`, `-b`, `-p`, `-n`, `-v` |
+| Eliminacion gaussiana | `5_sistemas-de-ecuaciones/eliminacion_gaussiana.py` | `-A`, `-b`, `-v` |
+| Jacobi | `5_sistemas-de-ecuaciones/jacobi.py` | `-A`, `-b`, `-x`, `-i`, `-e`, `--matrix-form`, `-v` |
+| Gauss-Seidel | `5_sistemas-de-ecuaciones/gauss-seidel.py` | `-A`, `-b`, `-x`, `-i`, `-e`, `--matrix-form`, `-v` |
 
 ## Convenciones para codigo nuevo
 
@@ -71,6 +75,7 @@ Usar helpers de `utils.py` solo dentro de la carpeta del tema correspondiente.
 - `2_edos-pvi/utils.py`: funciones matematicas seguras en variables `t` e `y`, argumentos comunes de PVI (`-a`, `-b`, `-y`, `-H`, `-f`, `-i`, `-v`), resolucion de pasos, validacion de valores finitos y tabla verbose `k | t_k | y_k`.
 - `3_interpolacion/utils.py`: parsing comun de puntos y listas para `-p`, `-x`, `-y`, `-e`, `-v`.
 - `4_integracion/utils.py`: funciones matematicas seguras en variable `x`, argumento comun `-f` / `--function`, validacion de intervalo, validacion de `-n` y tablas verbose.
+- `5_sistemas-de-ecuaciones/utils.py`: parsing comun de matrices y vectores para `-A`, `-b`, `-x`, validacion de sistemas cuadrados, norma infinito, formato de vectores y tablas verbose.
 
 No importar helpers entre carpetas distintas si eso mezcla convenciones de variables o argumentos. Por ejemplo, `build_function` de ecuaciones no lineales usa `x`, mientras que el de PVI usa `t, y`.
 
@@ -225,6 +230,76 @@ Simpson 1/3 compuesto (`-n` indica cantidad de paneles de Simpson, cada panel us
 ```bash
 cd /Users/rodri/ITBA/metodos
 python3 4_integracion/simpson.py -f "x**2 * exp(-x**2)" -a 0 -b 1 -n 2 -v
+```
+
+Gauss-Legendre simple de 2 puntos (`-n 1`):
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/gauss_legendre.py -f "exp(x)" -a 0 -b 1 -p 2 -n 1 -v
+```
+
+Gauss-Legendre simple de 3 puntos (`-n 1`):
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/gauss_legendre.py -f "exp(x)" -a 0 -b 1 -p 3 -n 1 -v
+```
+
+Gauss-Legendre compuesto (`-n` indica cantidad de subintervalos):
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 4_integracion/gauss_legendre.py -f "x**4 * cos(x)" -a 2 -b 8 -p 2 -n 3 -v
+```
+
+Eliminacion gaussiana:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 5_sistemas-de-ecuaciones/eliminacion_gaussiana.py -A "2,1,-1; -3,-1,2; -2,1,2" -b "8,-11,-3" -v
+```
+
+Jacobi por iteraciones:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 5_sistemas-de-ecuaciones/jacobi.py -A "2,1; 1,-2" -b "8,-1" -x "0,0" -i 3 -v
+```
+
+Jacobi por error, ignorando iteraciones:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 5_sistemas-de-ecuaciones/jacobi.py -A "26,2,2; 3,27,3; 2,3,17" -b "12.6,-14.3,6" -x "0,0,0" -e 0.001 -v
+```
+
+Jacobi en forma matricial:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 5_sistemas-de-ecuaciones/jacobi.py -A "2,1; 1,-2" -b "8,-1" --matrix-form
+```
+
+Gauss-Seidel por iteraciones:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 5_sistemas-de-ecuaciones/gauss-seidel.py -A "2,1; 1,-2" -b "8,-1" -x "0,0" -i 3 -v
+```
+
+Gauss-Seidel por error, ignorando iteraciones:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 5_sistemas-de-ecuaciones/gauss-seidel.py -A "26,2,2; 3,27,3; 2,3,17" -b "12.6,-14.3,6" -x "0,0,0" -e 0.001 -v
+```
+
+Gauss-Seidel en forma matricial:
+
+```bash
+cd /Users/rodri/ITBA/metodos
+python3 5_sistemas-de-ecuaciones/gauss-seidel.py -A "2,1; 1,-2" -b "8,-1" --matrix-form
 ```
 
 ## Archivos legacy de codigos_nash

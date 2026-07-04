@@ -10,9 +10,6 @@ Resolver un sistema $A\,x = b$. Hay dos familias de métodos:
 - **Directos**: eliminación gaussiana. Dan la solución **exacta** en una cantidad finita de pasos.
 - **Iterativos**: Jacobi y Gauss-Seidel. **Aproximan** la solución repitiendo una fórmula; sirven para sistemas grandes y son los que más caen en los finales.
 
-> [!NOTE]
-> Este tema **no está en la receta**, pero aparece seguido en finales: casi siempre piden **un paso** de Jacobi o Gauss-Seidel desde un vector dado (redondeando a 4 decimales) y/o escribir el método en la forma matricial $x^{(k+1)} = M\,x^{(k)} + C$.
-
 ---
 
 ## Eliminación gaussiana

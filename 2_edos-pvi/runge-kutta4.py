@@ -12,22 +12,8 @@ ITERATIONS = None  # Optional: if None, calculated from (B - A) / H
 FUNCTION = "y * (sin(t))**3"
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Metodo de Runge-Kutta de orden 4 para PVI y' = f(t, y)")
-    add_pvi_arguments(parser, A, B, Y0, H, ITERATIONS, FUNCTION)
-    args = parser.parse_args()
-    resolve_pvi_steps(parser, args)
 
-    try:
-        args.function = build_function(args.function)
-        args.function(args.a, args.y0)
-    except Exception as exc:
-        parser.error(f"--function invalida: {exc}")
-
-    return args
-
-
-def runge_kutta4(function, a, y0, h, iterations, verbose=False):
+def runge_kutta4_method(function, a, y0, h, iterations, verbose=False):
     t = a
     y = y0
     values = [(0, t, y)]
@@ -49,9 +35,27 @@ def runge_kutta4(function, a, y0, h, iterations, verbose=False):
     return values
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Metodo de Runge-Kutta de orden 4 para PVI y' = f(t, y)")
+    add_pvi_arguments(parser, A, B, Y0, H, ITERATIONS, FUNCTION)
+    args = parser.parse_args()
+    resolve_pvi_steps(parser, args)
+
+    try:
+        args.function = build_function(args.function)
+        args.function(args.a, args.y0)
+    except Exception as exc:
+        parser.error(f"--function invalida: {exc}")
+
+    return args
+
+
+
+
+
 args = parse_args()
 try:
-    result = runge_kutta4(
+    result = runge_kutta4_method(
         args.function,
         args.a,
         args.y0,

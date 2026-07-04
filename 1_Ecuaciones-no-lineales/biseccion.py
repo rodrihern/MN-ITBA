@@ -10,30 +10,7 @@ ITERATIONS = 5
 ERROR = None
 FUNCTION = "x**3 - x - 2"
 
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="Metodo de biseccion")
-    parser.add_argument("-a", type=float, default=A, help="Extremo izquierdo del intervalo")
-    parser.add_argument("-b", type=float, default=B, help="Extremo derecho del intervalo")
-    add_function_argument(parser, FUNCTION)
-    parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS, help="Cantidad de iteraciones")
-    parser.add_argument("-e", "--error", type=float, default=ERROR, help="Error minimo para cortar. Si se indica, ignora iteraciones")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla de iteraciones")
-    args = parser.parse_args()
-
-    validate_iteration_args(parser, args)
-
-    try:
-        args.function = build_function(args.function)
-        args.function(args.a)
-        args.function(args.b)
-    except Exception as exc:
-        parser.error(f"--function invalida: {exc}")
-
-    return args
-
-
-def bisection(function, a, b, iterations, error, verbose=False):
+def bisection_method(function, a, b, iterations, error, verbose=False):
     fa = function(a)
     fb = function(b)
 
@@ -70,10 +47,34 @@ def bisection(function, a, b, iterations, error, verbose=False):
 
     return x
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Metodo de biseccion")
+    parser.add_argument("-a", type=float, default=A, help="Extremo izquierdo del intervalo")
+    parser.add_argument("-b", type=float, default=B, help="Extremo derecho del intervalo")
+    add_function_argument(parser, FUNCTION)
+    parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS, help="Cantidad de iteraciones")
+    parser.add_argument("-e", "--error", type=float, default=ERROR, help="Error minimo para cortar. Si se indica, ignora iteraciones")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla de iteraciones")
+    args = parser.parse_args()
+
+    validate_iteration_args(parser, args)
+
+    try:
+        args.function = build_function(args.function)
+        args.function(args.a)
+        args.function(args.b)
+    except Exception as exc:
+        parser.error(f"--function invalida: {exc}")
+
+    return args
+
+
+
+
 
 args = parse_args()
 try:
-    result = bisection(args.function, args.a, args.b, args.iterations, args.error, args.verbose)
+    result = bisection_method(args.function, args.a, args.b, args.iterations, args.error, args.verbose)
 except ValueError as exc:
     print(f"Error: {exc}", file=sys.stderr)
     sys.exit(1)

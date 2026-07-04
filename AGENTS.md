@@ -1,47 +1,52 @@
 # Instrucciones para Metodos Numericos
 
-Estas instrucciones aplican en `/Users/rodri/ITBA/metodos` cuando el usuario pida resolver ejercicios, migrar codigo desde `codigos_nash`, o editar scripts nuevos de metodos numericos.
+Estas instrucciones aplican en `/Users/rodri/ITBA/metodos` cuando el usuario pida resolver ejercicios o editar scripts de metodos numericos.
 
 ## Prioridades
 
-1. Para resolver ejercicios, usar primero los scripts nuevos del tema correspondiente.
-2. Si todavia no existe script nuevo para el metodo, usar `codigos_nash`.
-3. Cuando se cree o edite codigo nuevo, seguir las convenciones de este archivo.
-4. Todo codigo nuevo o migrado debe verificarse contra el legacy equivalente en `codigos_nash` antes de terminar.
+1. Para resolver ejercicios, usar el script del tema correspondiente.
+2. Cuando se cree o edite codigo, seguir las convenciones de este archivo.
 
-No crear scripts nuevos para resolver un ejercicio si ya hay una forma razonable de hacerlo con los scripts existentes. Crear o modificar codigo solo si el usuario lo pide, si se esta migrando un metodo, o si no hay forma razonable de resolver el caso con lo existente.
+No crear scripts nuevos para resolver un ejercicio si ya hay una forma razonable de hacerlo con los scripts existentes. Crear o modificar codigo solo si el usuario lo pide, o si no hay forma razonable de resolver el caso con lo existente.
 
-## Scripts nuevos
+## Scripts
 
-Los scripts nuevos se corren desde `/Users/rodri/ITBA/metodos`.
+Los scripts se corren desde `/Users/rodri/ITBA/metodos`.
 
-| Metodo | Archivo | Argumentos principales |
-|---|---|---|
-| Biseccion | `1_Ecuaciones-no-lineales/biseccion.py` | `-f`, `-a`, `-b`, `-i`, `-e`, `-v` |
-| Newton | `1_Ecuaciones-no-lineales/newton-raphson.py` | `-f`, `-d`, `-s`, `-x`, `-a`, `-b`, `-i`, `-e`, `-v` |
-| Punto fijo | `1_Ecuaciones-no-lineales/punto_fijo.py` | `-f`, `-x`, `-a`, `-b`, `-i`, `-e`, `-v` |
-| Euler | `2_edos-pvi/euler.py` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
-| Heun orden 2 | `2_edos-pvi/heun2.py` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
-| Taylor orden 2 | `2_edos-pvi/taylor2.py` | `-f`, `-d`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
-| Runge-Kutta orden 4 | `2_edos-pvi/runge-kutta4.py` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
-| Interpolacion Lagrange | `3_interpolacion/lagrange.py` | `-x`, `-y`, `-p`, `-e`, `-v` |
-| Interpolacion Newton | `3_interpolacion/newton.py` | `-x`, `-y`, `-p`, `-e`, `-v` |
-| Rectangulo | `4_integracion/rectangulo.py` | `-f`, `-a`, `-b`, `-n`, `-m`, `-v` |
-| Trapecio | `4_integracion/trapecio.py` | `-f`, `-a`, `-b`, `-n`, `-v` |
-| Simpson 1/3 | `4_integracion/simpson.py` | `-f`, `-a`, `-b`, `-n`, `-v` |
-| Gauss-Legendre | `4_integracion/gauss_legendre.py` | `-f`, `-a`, `-b`, `-p`, `-n`, `-v` |
-| Eliminacion gaussiana | `5_sistemas-de-ecuaciones/eliminacion_gaussiana.py` | `-A`, `-b`, `-v` |
-| Jacobi | `5_sistemas-de-ecuaciones/jacobi.py` | `-A`, `-b`, `-x`, `-i`, `-e`, `--matrix-form`, `-v` |
-| Gauss-Seidel | `5_sistemas-de-ecuaciones/gauss-seidel.py` | `-A`, `-b`, `-x`, `-i`, `-e`, `--matrix-form`, `-v` |
+| Metodo | Archivo | Funcion del metodo | Argumentos principales |
+|---|---|---|---|
+| Biseccion | `1_Ecuaciones-no-lineales/biseccion.py` | `bisection_method` | `-f`, `-a`, `-b`, `-i`, `-e`, `-v` |
+| Newton | `1_Ecuaciones-no-lineales/newton-raphson.py` | `newton_raphson_method` | `-f`, `-d`, `-s`, `-x`, `-a`, `-b`, `-i`, `-e`, `-v` |
+| Punto fijo | `1_Ecuaciones-no-lineales/punto_fijo.py` | `fixed_point_method` | `-f`, `-x`, `-a`, `-b`, `-i`, `-e`, `-v` |
+| Euler | `2_edos-pvi/euler.py` | `euler_method` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Heun orden 2 | `2_edos-pvi/heun2.py` | `heun2_method` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Taylor orden 2 | `2_edos-pvi/taylor2.py` | `taylor2_method` | `-f`, `-d`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Runge-Kutta orden 4 | `2_edos-pvi/runge-kutta4.py` | `runge_kutta4_method` | `-f`, `-a`, `-b`, `-y`, `-H`, `-i`, `-v` |
+| Interpolacion Lagrange | `3_interpolacion/lagrange.py` | `lagrange_method` | `-x`, `-y`, `-p`, `-e`, `-v` |
+| Interpolacion Newton | `3_interpolacion/newton.py` | `newton_method` | `-x`, `-y`, `-p`, `-e`, `-v` |
+| Rectangulo | `4_integracion/rectangulo.py` | `rectangle_method` | `-f`, `-a`, `-b`, `-n`, `-m`, `-v` |
+| Trapecio | `4_integracion/trapecio.py` | `trapezoid_method` | `-f`, `-a`, `-b`, `-n`, `-v` |
+| Simpson 1/3 | `4_integracion/simpson.py` | `simpson_method` | `-f`, `-a`, `-b`, `-n`, `-v` |
+| Gauss-Legendre | `4_integracion/gauss_legendre.py` | `gauss_legendre_method` | `-f`, `-a`, `-b`, `-p`, `-n`, `-v` |
+| Eliminacion gaussiana | `5_sistemas-de-ecuaciones/eliminacion_gaussiana.py` | `gaussian_elimination_method` | `-A`, `-b`, `-v` |
+| Jacobi | `5_sistemas-de-ecuaciones/jacobi.py` | `jacobi_method` | `-A`, `-b`, `-x`, `-i`, `-e`, `--matrix-form`, `-v` |
+| Gauss-Seidel | `5_sistemas-de-ecuaciones/gauss-seidel.py` | `gauss_seidel_method` | `-A`, `-b`, `-x`, `-i`, `-e`, `--matrix-form`, `-v` |
 
 ## Convenciones para codigo nuevo
 
-Todo script nuevo o migrado desde `codigos_nash` debe seguir este formato:
+Todo script nuevo debe seguir este formato:
 
 - Usar `argparse` para argumentos CLI.
+- Ordenar el archivo siempre igual, de arriba hacia abajo:
+  1. `import`s.
+  2. Parametros editables (defaults).
+  3. La funcion del metodo numerico (lo primero despues de los defaults).
+  4. Helpers locales y `parse_args()`.
+  5. Parseo de argumentos y llamado a la funcion del metodo.
 - Definir parametros editables arriba del archivo en mayusculas, por ejemplo `A`, `B`, `X0`, `Y0`, `H`, `ITERATIONS`, `ERROR`, `FUNCTION`.
 - Usar esos parametros como defaults de `argparse`, para que el script funcione tanto editando el archivo como pasando argumentos.
-- Separar el codigo en funciones: `parse_args()`, una funcion del metodo numerico, y helpers como `build_function(...)` o `build_functions(...)` si hacen falta.
+- La funcion del metodo se nombra como el archivo pero en ingles y con sufijo `_method`, por ejemplo `biseccion.py` -> `bisection_method`, `punto_fijo.py` -> `fixed_point_method`, `trapecio.py` -> `trapezoid_method`. Si el nombre del archivo lleva numero de orden, mantenerlo (`heun2.py` -> `heun2_method`).
+- Separar el codigo en funciones: la funcion del metodo numerico, `parse_args()`, y helpers como `build_function(...)` o `build_functions(...)` si hacen falta. Como Python resuelve nombres al momento de la llamada, los helpers pueden ir despues de la funcion del metodo aunque esta los use.
 - Reutilizar helpers comunes de la carpeta en `utils.py` cuando reduzcan duplicacion clara, por ejemplo parsing de puntos, funciones matematicas seguras, validaciones compartidas, argumentos CLI repetidos o tablas verbose.
 - Si varios scripts de una misma carpeta comparten interfaz, extraer el armado de esos argumentos a helpers tipo `add_*_arguments(...)` o `resolve_*_args(...)`. Cada script debe seguir mostrando en `--help` solamente los argumentos que realmente usa.
 - No mover la formula principal del metodo a `utils.py` ni forzar un parser generico si los argumentos del metodo son distintos. Es preferible tener helpers chicos y componibles antes que un parser comun que acepte flags que despues se ignoran.
@@ -79,25 +84,21 @@ Usar helpers de `utils.py` solo dentro de la carpeta del tema correspondiente.
 
 No importar helpers entre carpetas distintas si eso mezcla convenciones de variables o argumentos. Por ejemplo, `build_function` de ecuaciones no lineales usa `x`, mientras que el de PVI usa `t, y`.
 
-## Verificacion obligatoria de codigo nuevo
+## Verificacion de codigo nuevo
 
-Despues de crear o editar un script nuevo que reemplaza un metodo de `codigos_nash`, verificarlo contra el archivo legacy correspondiente antes de terminar.
+Despues de crear o editar un script, verificarlo antes de terminar.
 
 Checklist minimo:
 
-- Correr al menos un caso comparable con el script nuevo.
-- Correr el mismo caso con la funcion legacy de `codigos_nash`, normalmente importandola desde `python3 -c`.
-- Si el archivo legacy tiene un ejemplo hardcodeado en `if __name__ == "__main__"`, correr tambien ese ejemplo y reproducirlo con el script nuevo.
-- Comparar el valor final numerico.
+- Correr al menos un caso comparable con el script y confirmar que el valor final es razonable.
 - Comparar el error reportado cuando aplique.
 - Probar `-v` / `--verbose` y confirmar que la tabla se imprime bien.
 - Probar sin `-v` y confirmar que imprime solo el resultado final.
 - Probar modo por iteraciones.
 - Probar modo por error/tolerancia, confirmando que ignora iteraciones.
 - Probar al menos un error de entrada importante del metodo y confirmar que el script muestra un mensaje corto sin traceback.
-- Si hay una diferencia con `codigos_nash`, no copiar automaticamente el comportamiento legacy. Revisar si el legacy usa una convencion incorrecta, documentar la diferencia y dejar el codigo nuevo con la convencion matematicamente consistente.
 
-## Como correr scripts nuevos
+## Como correr los scripts
 
 Biseccion por iteraciones:
 
@@ -302,101 +303,12 @@ cd /Users/rodri/ITBA/metodos
 python3 5_sistemas-de-ecuaciones/gauss-seidel.py -A "2,1; 1,-2" -b "8,-1" --matrix-form
 ```
 
-## Archivos legacy de codigos_nash
-
-Usar estos archivos solo cuando todavia no exista script nuevo para el metodo, o para verificar/corroborar codigo nuevo.
-
-| Metodo | Archivo | Funcion principal |
-|---|---|---|
-| Biseccion | `codigos_nash/roots/bisection.py` | `bisection_method(f, interval, iterations, err)` |
-| Newton | `codigos_nash/roots/newton_raphson.py` | `newton_raphson(f, df, x0, iterations, tolerance)` |
-| Punto fijo | `codigos_nash/roots/fixed_point.py` | `fixed_point_method(g, x0, interval, iterations, tolerance)` |
-| Euler | `codigos_nash/ivp/euler.py` | `euler_method(f, interval, y_0, h, M)` |
-| Heun | `codigos_nash/ivp/heun.py` | `heun_method(f, interval, y0, h, M)` |
-| Taylor orden 2 | `codigos_nash/ivp/taylor.py` | `taylor_second_order(f, df, interval, y0, h, N)` |
-| Taylor orden 3 | `codigos_nash/ivp/taylor.py` | `taylor_third_order(f, df, ddf, interval, y0, h, N)` |
-| Taylor orden 4 | `codigos_nash/ivp/taylor.py` | `taylor_fourth_order(f, df, ddf, dddf, interval, y0, h, N)` |
-| RK4 | `codigos_nash/ivp/runge_kutta.py` | `rk4(f, interval, y0, h, M)` |
-| Euler orden 2 | `codigos_nash/ivp/euler_second.py` | `euler_second_method(f, interval, y_0, y_p_0, h, M)` |
-| Trapecio / Simpson / Newton-Cotes | `codigos_nash/integration/newton_cotes.py` | `trapez_method`, `simpson_thirds`, `simpson_three_eights`, `simpson_from_table` |
-| Rectangulos | `codigos_nash/integration/rectangle.py` | `left_area`, `right_area`, `midpoint_area` |
-| Gauss-Legendre | `codigos_nash/integration/gauss_legendre.py` | `non_equidistant_two_points`, `non_equidistant_three_points`, `apply_to_subintervals` |
-| Interpolacion Lagrange | `codigos_nash/interpolation/lagrange.py` | `lagrange_poly`, `lagrange_error` |
-| Interpolacion Newton | `codigos_nash/interpolation/newton.py` | `newton_coeff`, `newton_poly`, `poly_grade`, `get_values` |
-| Bezier | `codigos_nash/interpolation/bezier.py` | `bezier_curve` |
-| Eliminacion gaussiana | `codigos_nash/linear_algebra/gaussian_elimination.py` | `gaussian_elimination` |
-| Jacobi / Gauss-Seidel | `codigos_nash/linear_algebra/lu_decomposition.py` | `jacobi`, `gauss_seidel` |
-
-## Como correr codigos_nash
-
-Los archivos legacy suelen tener ejemplos hardcodeados en `if __name__ == "__main__"`. Para casos especificos, conviene importar la funcion desde `python3 -c` y pasar lambdas.
-
-Biseccion:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/roots'); from bisection import bisection_method; bisection_method(lambda x: x**3-x-2, [1,2], 100, 1e-5)"
-```
-
-Newton:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/roots'); from newton_raphson import newton_raphson; newton_raphson(lambda x: x**3-x-2, lambda x: 3*x**2-1, 1.5, 100, 1e-5)"
-```
-
-Punto fijo:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/roots'); from fixed_point import fixed_point_method; fixed_point_method(lambda x: (x+2)**(1/3), 1.5, [1,2], 100, 1e-5)"
-```
-
-Euler / Heun / RK4:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/ivp'); from euler import euler_method; T,Y=euler_method(lambda t,y: t-y, [0,1], 3, 0.1, 10); print(T); print(Y)"
-```
-
-Para Heun cambiar `from euler import euler_method` por `from heun import heun_method`. Para RK4 usar `from runge_kutta import rk4`.
-
-Taylor:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/ivp'); from taylor import taylor_second_order; taylor_second_order(lambda t,y: 1+y**2, lambda t,y: 2*y*(1+y**2), [0,1], 1, 0.2, 5)"
-```
-
-Integracion:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/integration'); from newton_cotes import trapez_method; print(trapez_method(lambda x: math.exp(x*x), (0,3), 10))"
-```
-
-Rectangulos:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/integration'); from rectangle import midpoint_area; print(midpoint_area(lambda x: math.sin(x), (0, math.pi), 100))"
-```
-
-Gauss-Legendre:
-
-```bash
-cd /Users/rodri/ITBA/metodos
-python3 -c "import sys, math; sys.path.insert(0, 'codigos_nash/integration'); from gauss_legendre import non_equidistant_two_points; print(non_equidistant_two_points(lambda x: x**4*math.cos(x), (2,8)))"
-```
-
 ## Flujo para resolver ejercicios
 
 1. Identificar el metodo pedido y los datos del enunciado.
 2. Revisar el script correspondiente antes de responder.
 3. Correr el codigo localmente cuando sea posible.
-4. Si existe script nuevo para el metodo, resolver con ese script y explicar como correrlo.
-5. Si no existe script nuevo, resolver con `codigos_nash`.
-6. Si hay dudas por convencion, usar `codigos_nash` para corroborar y explicar cualquier diferencia.
+4. Resolver con el script y explicar como correrlo.
 
 ## Formato para respuestas de ejercicios
 
@@ -447,7 +359,7 @@ u1' = u2
 u2' = expresion despejada de y''
 ```
 
-## Cuando el enunciado o el legacy tenga problemas
+## Cuando el enunciado tenga problemas
 
 Si el enunciado parece inconsistente, decirlo claramente antes de dar una respuesta alternativa.
 
@@ -457,8 +369,6 @@ Ejemplos:
 - Si un despeje de punto fijo diverge.
 - Si el metodo solicitado no converge con los datos dados.
 - Si el codigo existente no puede representar el caso sin editar un archivo hardcodeado.
-- Si un codigo usa una convencion distinta a la del enunciado.
-- Si `codigos_nash` tiene un bug o reporta un valor inconsistente con el error calculado.
 
 En esos casos, explicar que se corrio, que paso, y cual es la interpretacion o correccion mas probable solo si corresponde.
 

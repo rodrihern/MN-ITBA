@@ -13,6 +13,32 @@ ERROR = None
 FUNCTION = "(x + 1)**(1/3)"
 
 
+def fixed_point_method(function, x0, a, b, iterations, error, verbose=False):
+    x = x0
+    validate_value(x, a, b)
+
+    if verbose:
+        print(f"{'n':<3} | {'x_n':<20} | {'E_n':<20}")
+        print("-" * 49)
+        print(f"{0:<3} | {x:<20.12g} | {'-':<20}")
+
+    n = 1
+    while error is not None or n <= iterations:
+        previous = x
+        x = function(x)
+        validate_value(x, a, b)
+        current_error = abs(x - previous)
+
+        if verbose:
+            print(f"{n:<3} | {x:<20.12g} | {current_error:<20.12g}")
+
+        if error is not None and current_error < error:
+            break
+        n += 1
+
+    return x
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Metodo de punto fijo")
     parser.add_argument("-x", "--x0", type=float, default=X0, help="Valor inicial")
@@ -53,35 +79,12 @@ def validate_value(x, a, b):
         raise ValueError(f"el valor {x} queda fuera del intervalo [{a}, {b}]")
 
 
-def fixed_point(function, x0, a, b, iterations, error, verbose=False):
-    x = x0
-    validate_value(x, a, b)
 
-    if verbose:
-        print(f"{'n':<3} | {'x_n':<20} | {'E_n':<20}")
-        print("-" * 49)
-        print(f"{0:<3} | {x:<20.12g} | {'-':<20}")
-
-    n = 1
-    while error is not None or n <= iterations:
-        previous = x
-        x = function(x)
-        validate_value(x, a, b)
-        current_error = abs(x - previous)
-
-        if verbose:
-            print(f"{n:<3} | {x:<20.12g} | {current_error:<20.12g}")
-
-        if error is not None and current_error < error:
-            break
-        n += 1
-
-    return x
 
 
 args = parse_args()
 try:
-    result = fixed_point(
+    result = fixed_point_method(
         args.function,
         args.x0,
         args.a,

@@ -15,6 +15,34 @@ DERIVATIVE = None
 SECOND_DERIVATIVE = None
 
 
+def newton_raphson_method(function, derivative, x0, iterations, error, verbose=False):
+    x = x0
+
+    if verbose:
+        print(f"{'n':<3} | {'x_n':<20} | {'E_n':<20}")
+        print("-" * 49)
+        print(f"{0:<3} | {x:<20.12g} | {'-':<20}")
+
+    n = 1
+    while error is not None or n <= iterations:
+        derivative_value = derivative(x)
+        if derivative_value == 0:
+            raise ZeroDivisionError("La derivada vale 0, no se puede continuar")
+
+        previous = x
+        x = x - function(x) / derivative_value
+        current_error = abs(previous - x)
+
+        if verbose:
+            print(f"{n:<3} | {x:<20.12g} | {current_error:<20.12g}")
+
+        if error is not None and current_error < error:
+            break
+        n += 1
+
+    return x
+
+
 SYMPY_NAMES = {name: getattr(sp, name) for name in dir(sp) if not name.startswith("_")}
 SYMPY_NAMES["abs"] = sp.Abs
 
@@ -76,41 +104,13 @@ def choose_initial_value(function, second_derivative, a, b):
     return b
 
 
-def newton_raphson(function, derivative, x0, iterations, error, verbose=False):
-    x = x0
-
-    if verbose:
-        print(f"{'n':<3} | {'x_n':<20} | {'E_n':<20}")
-        print("-" * 49)
-        print(f"{0:<3} | {x:<20.12g} | {'-':<20}")
-
-    n = 1
-    while error is not None or n <= iterations:
-        derivative_value = derivative(x)
-        if derivative_value == 0:
-            raise ZeroDivisionError("La derivada vale 0, no se puede continuar")
-
-        previous = x
-        x = x - function(x) / derivative_value
-        current_error = abs(previous - x)
-
-        if verbose:
-            print(f"{n:<3} | {x:<20.12g} | {current_error:<20.12g}")
-
-        if error is not None and current_error < error:
-            break
-        n += 1
-
-    return x
-
-
 args = parse_args()
 x0 = args.x0
 if x0 is None:
     x0 = choose_initial_value(args.function, args.second_derivative, args.a, args.b)
 
 try:
-    result = newton_raphson(args.function, args.derivative, x0, args.iterations, args.error, args.verbose)
+    result = newton_raphson_method(args.function, args.derivative, x0, args.iterations, args.error, args.verbose)
 except ZeroDivisionError as exc:
     print(f"Error: {exc}", file=sys.stderr)
     sys.exit(1)

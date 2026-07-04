@@ -1,6 +1,5 @@
 import argparse
 import sys
-
 from utils import add_pvi_arguments, build_function, print_step_table, resolve_pvi_steps, validate_finite
 
 # Define parameters
@@ -10,6 +9,25 @@ Y0 = 1
 H = 0.5
 ITERATIONS = None  # Optional: if None, calculated from (B - A) / H
 FUNCTION = "(t - y) / 2"
+
+
+
+def euler_method(function, a, y0, h, iterations, verbose=False):
+    t = a
+    y = y0
+    values = [(0, t, y)]
+
+    for k in range(1, iterations + 1):
+        y = y + h * function(t, y)
+        t = a + k * h
+        validate_finite(y)
+        values.append((k, t, y))
+
+    if verbose:
+        print_step_table(values)
+
+    return values
+
 
 
 def parse_args():
@@ -27,26 +45,12 @@ def parse_args():
     return args
 
 
-def euler(function, a, y0, h, iterations, verbose=False):
-    t = a
-    y = y0
-    values = [(0, t, y)]
 
-    for k in range(1, iterations + 1):
-        y = y + h * function(t, y)
-        t = a + k * h
-        validate_finite(y)
-        values.append((k, t, y))
-
-    if verbose:
-        print_step_table(values)
-
-    return values
 
 
 args = parse_args()
 try:
-    result = euler(
+    result = euler_method(
         args.function,
         args.a,
         args.y0,

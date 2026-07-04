@@ -28,42 +28,6 @@ ITERATIONS = 3
 ERROR = None
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Metodo de Gauss-Seidel para sistemas lineales")
-    add_system_arguments(parser, MATRIX, VECTOR)
-    parser.add_argument("-x", "--initial", default=INITIAL, help='Vector inicial. Si no se indica, usa ceros. Ej: "0,0"')
-    parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS, help="Cantidad de iteraciones")
-    parser.add_argument("-e", "--error", type=float, default=ERROR, help="Error minimo para cortar. Si se indica, ignora iteraciones")
-    parser.add_argument("--matrix-form", action="store_true", help="Muestra M y C para x^(k+1) = M x^(k) + C")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla de iteraciones")
-    args = parser.parse_args()
-    args = resolve_system_args(parser, args)
-    validate_iteration_args(parser, args)
-
-    try:
-        args.initial = [0] * len(args.vector) if args.initial is None else parse_vector(args.initial)
-    except ValueError as exc:
-        parser.error(f"--initial invalido: {exc}")
-    validate_initial_vector(parser, args.initial, len(args.vector))
-
-    return args
-
-
-def gauss_seidel_matrix_form(matrix, vector):
-    size = len(matrix)
-    lower = [[matrix[i][j] if j <= i else 0 for j in range(size)] for i in range(size)]
-    upper = [[matrix[i][j] if j > i else 0 for j in range(size)] for i in range(size)]
-    iteration_matrix = []
-
-    for basis_vector in identity_matrix(size):
-        solved = solve_lower_triangular(lower, matrix_vector_multiply(upper, basis_vector))
-        iteration_matrix.append([-value for value in solved])
-
-    iteration_matrix = [[iteration_matrix[column][row] for column in range(size)] for row in range(size)]
-    constant = solve_lower_triangular(lower, vector)
-    return iteration_matrix, constant
-
-
 def gauss_seidel_method(matrix, vector, initial, iterations, error, verbose=False):
     validate_nonzero_diagonal(matrix)
     size = len(matrix)
@@ -97,6 +61,42 @@ def gauss_seidel_method(matrix, vector, initial, iterations, error, verbose=Fals
             break
 
     return x
+
+
+def gauss_seidel_matrix_form(matrix, vector):
+    size = len(matrix)
+    lower = [[matrix[i][j] if j <= i else 0 for j in range(size)] for i in range(size)]
+    upper = [[matrix[i][j] if j > i else 0 for j in range(size)] for i in range(size)]
+    iteration_matrix = []
+
+    for basis_vector in identity_matrix(size):
+        solved = solve_lower_triangular(lower, matrix_vector_multiply(upper, basis_vector))
+        iteration_matrix.append([-value for value in solved])
+
+    iteration_matrix = [[iteration_matrix[column][row] for column in range(size)] for row in range(size)]
+    constant = solve_lower_triangular(lower, vector)
+    return iteration_matrix, constant
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Metodo de Gauss-Seidel para sistemas lineales")
+    add_system_arguments(parser, MATRIX, VECTOR)
+    parser.add_argument("-x", "--initial", default=INITIAL, help='Vector inicial. Si no se indica, usa ceros. Ej: "0,0"')
+    parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS, help="Cantidad de iteraciones")
+    parser.add_argument("-e", "--error", type=float, default=ERROR, help="Error minimo para cortar. Si se indica, ignora iteraciones")
+    parser.add_argument("--matrix-form", action="store_true", help="Muestra M y C para x^(k+1) = M x^(k) + C")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla de iteraciones")
+    args = parser.parse_args()
+    args = resolve_system_args(parser, args)
+    validate_iteration_args(parser, args)
+
+    try:
+        args.initial = [0] * len(args.vector) if args.initial is None else parse_vector(args.initial)
+    except ValueError as exc:
+        parser.error(f"--initial invalido: {exc}")
+    validate_initial_vector(parser, args.initial, len(args.vector))
+
+    return args
 
 
 args = parse_args()

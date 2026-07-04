@@ -14,11 +14,20 @@ EVAL_POINT = None
 Table = list[list[Optional[float]]]
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Interpolacion de Newton con tabla de diferencias divididas")
-    add_interpolation_arguments(parser, POINTS, EVAL_POINT, "Muestra la tabla de diferencias divididas")
-    args = parser.parse_args()
-    return resolve_interpolation_points(parser, args, X_VALUES, Y_VALUES)
+def newton_method(x_values, y_values, point=None, verbose=False):
+    table = divided_differences_table(x_values, y_values)
+    coefficients = newton_coefficients(table)
+    polynomial = format_newton_polynomial(coefficients, x_values)
+
+    if verbose:
+        print_table(table)
+        print()
+        print(f"Coeficientes: {coefficients}")
+        print(f"Polinomio: {polynomial}")
+
+    if point is None:
+        return polynomial
+    return evaluate_newton_polynomial(coefficients, x_values, point)
 
 
 def divided_differences_table(x_values, y_values):
@@ -92,25 +101,16 @@ def print_table(table):
         print(" | ".join(formatted))
 
 
-def newton_interpolation(x_values, y_values, point=None, verbose=False):
-    table = divided_differences_table(x_values, y_values)
-    coefficients = newton_coefficients(table)
-    polynomial = format_newton_polynomial(coefficients, x_values)
-
-    if verbose:
-        print_table(table)
-        print()
-        print(f"Coeficientes: {coefficients}")
-        print(f"Polinomio: {polynomial}")
-
-    if point is None:
-        return polynomial
-    return evaluate_newton_polynomial(coefficients, x_values, point)
+def parse_args():
+    parser = argparse.ArgumentParser(description="Interpolacion de Newton con tabla de diferencias divididas")
+    add_interpolation_arguments(parser, POINTS, EVAL_POINT, "Muestra la tabla de diferencias divididas")
+    args = parser.parse_args()
+    return resolve_interpolation_points(parser, args, X_VALUES, Y_VALUES)
 
 
 args = parse_args()
 try:
-    result = newton_interpolation(
+    result = newton_method(
         args.x_values,
         args.y_values,
         args.eval,

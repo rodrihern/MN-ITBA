@@ -25,43 +25,6 @@ ITERATIONS = 3
 ERROR = None
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Metodo de Jacobi para sistemas lineales")
-    add_system_arguments(parser, MATRIX, VECTOR)
-    parser.add_argument("-x", "--initial", default=INITIAL, help='Vector inicial. Si no se indica, usa ceros. Ej: "0,0"')
-    parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS, help="Cantidad de iteraciones")
-    parser.add_argument("-e", "--error", type=float, default=ERROR, help="Error minimo para cortar. Si se indica, ignora iteraciones")
-    parser.add_argument("--matrix-form", action="store_true", help="Muestra M y C para x^(k+1) = M x^(k) + C")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla de iteraciones")
-    args = parser.parse_args()
-    args = resolve_system_args(parser, args)
-    validate_iteration_args(parser, args)
-
-    try:
-        args.initial = [0] * len(args.vector) if args.initial is None else parse_vector(args.initial)
-    except ValueError as exc:
-        parser.error(f"--initial invalido: {exc}")
-    validate_initial_vector(parser, args.initial, len(args.vector))
-
-    return args
-
-
-def jacobi_matrix_form(matrix, vector):
-    size = len(matrix)
-    iteration_matrix = [[0] * size for _ in range(size)]
-    constant = [0] * size
-
-    for i in range(size):
-        if matrix[i][i] == 0:
-            raise ValueError("la diagonal no puede tener ceros para este metodo")
-        constant[i] = vector[i] / matrix[i][i]
-        for j in range(size):
-            if i != j:
-                iteration_matrix[i][j] = -matrix[i][j] / matrix[i][i]
-
-    return iteration_matrix, constant
-
-
 def jacobi_method(matrix, vector, initial, iterations, error, verbose=False):
     validate_nonzero_diagonal(matrix)
     size = len(matrix)
@@ -96,6 +59,43 @@ def jacobi_method(matrix, vector, initial, iterations, error, verbose=False):
             break
 
     return x
+
+
+def jacobi_matrix_form(matrix, vector):
+    size = len(matrix)
+    iteration_matrix = [[0] * size for _ in range(size)]
+    constant = [0] * size
+
+    for i in range(size):
+        if matrix[i][i] == 0:
+            raise ValueError("la diagonal no puede tener ceros para este metodo")
+        constant[i] = vector[i] / matrix[i][i]
+        for j in range(size):
+            if i != j:
+                iteration_matrix[i][j] = -matrix[i][j] / matrix[i][i]
+
+    return iteration_matrix, constant
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Metodo de Jacobi para sistemas lineales")
+    add_system_arguments(parser, MATRIX, VECTOR)
+    parser.add_argument("-x", "--initial", default=INITIAL, help='Vector inicial. Si no se indica, usa ceros. Ej: "0,0"')
+    parser.add_argument("-i", "--iterations", type=int, default=ITERATIONS, help="Cantidad de iteraciones")
+    parser.add_argument("-e", "--error", type=float, default=ERROR, help="Error minimo para cortar. Si se indica, ignora iteraciones")
+    parser.add_argument("--matrix-form", action="store_true", help="Muestra M y C para x^(k+1) = M x^(k) + C")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra la tabla de iteraciones")
+    args = parser.parse_args()
+    args = resolve_system_args(parser, args)
+    validate_iteration_args(parser, args)
+
+    try:
+        args.initial = [0] * len(args.vector) if args.initial is None else parse_vector(args.initial)
+    except ValueError as exc:
+        parser.error(f"--initial invalido: {exc}")
+    validate_initial_vector(parser, args.initial, len(args.vector))
+
+    return args
 
 
 args = parse_args()

@@ -10,11 +10,19 @@ POINTS = None
 EVAL_POINT = None
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Interpolacion de Lagrange")
-    add_interpolation_arguments(parser, POINTS, EVAL_POINT, "Muestra los terminos de Lagrange")
-    args = parser.parse_args()
-    return resolve_interpolation_points(parser, args, X_VALUES, Y_VALUES)
+def lagrange_method(x_values, y_values, point=None, verbose=False):
+    polynomial = format_lagrange_polynomial(x_values, y_values)
+
+    if verbose:
+        print_points(x_values, y_values)
+        print()
+        print_basis_terms(x_values, y_values)
+        print()
+        print(f"Polinomio: {polynomial}")
+
+    if point is None:
+        return polynomial
+    return lagrange_value(x_values, y_values, point)
 
 
 def lagrange_basis_value(i, x_values, point):
@@ -76,24 +84,16 @@ def print_basis_terms(x_values, y_values):
         print(f"{i:<3} | {y_i:<20.12g} | {format_lagrange_basis(i, x_values):<60}")
 
 
-def lagrange_interpolation(x_values, y_values, point=None, verbose=False):
-    polynomial = format_lagrange_polynomial(x_values, y_values)
-
-    if verbose:
-        print_points(x_values, y_values)
-        print()
-        print_basis_terms(x_values, y_values)
-        print()
-        print(f"Polinomio: {polynomial}")
-
-    if point is None:
-        return polynomial
-    return lagrange_value(x_values, y_values, point)
+def parse_args():
+    parser = argparse.ArgumentParser(description="Interpolacion de Lagrange")
+    add_interpolation_arguments(parser, POINTS, EVAL_POINT, "Muestra los terminos de Lagrange")
+    args = parser.parse_args()
+    return resolve_interpolation_points(parser, args, X_VALUES, Y_VALUES)
 
 
 args = parse_args()
 try:
-    result = lagrange_interpolation(
+    result = lagrange_method(
         args.x_values,
         args.y_values,
         args.eval,

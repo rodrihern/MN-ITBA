@@ -10,6 +10,34 @@ N = 1
 MODE = "midpoint"
 FUNCTION = "exp(x)"
 
+def rectangle_method(function, a, b, subintervals, mode, verbose=False):
+    h = (b - a) / subintervals
+    result = 0
+    rows = []
+
+    for k in range(subintervals):
+        left = a + k * h
+        right = left + h
+
+        if mode == "left":
+            x = left
+        elif mode == "right":
+            x = right
+        else:
+            x = (left + right) / 2
+
+        y = function(x)
+        result += h * y
+        rows.append((k, x, y))
+
+    if verbose:
+        print(f"{'k':<3} | {'x':<20} | {'f(x)':<20}")
+        print("-" * 49)
+        for k, x, y in rows:
+            print(f"{k:<3} | {x:<20.12g} | {y:<20.12g}")
+
+    return result
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Metodo del rectangulo. Usa -n 1 para la regla simple.")
@@ -40,38 +68,12 @@ def parse_args():
     return args
 
 
-def rectangle_rule(function, a, b, subintervals, mode, verbose=False):
-    h = (b - a) / subintervals
-    result = 0
-    rows = []
 
-    for k in range(subintervals):
-        left = a + k * h
-        right = left + h
-
-        if mode == "left":
-            x = left
-        elif mode == "right":
-            x = right
-        else:
-            x = (left + right) / 2
-
-        y = function(x)
-        result += h * y
-        rows.append((k, x, y))
-
-    if verbose:
-        print(f"{'k':<3} | {'x':<20} | {'f(x)':<20}")
-        print("-" * 49)
-        for k, x, y in rows:
-            print(f"{k:<3} | {x:<20.12g} | {y:<20.12g}")
-
-    return result
 
 
 args = parse_args()
 try:
-    result = rectangle_rule(args.function, args.a, args.b, args.subintervals, args.mode, args.verbose)
+    result = rectangle_method(args.function, args.a, args.b, args.subintervals, args.mode, args.verbose)
 except Exception as exc:
     print(f"Error: {exc}", file=sys.stderr)
     sys.exit(1)

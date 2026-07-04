@@ -10,6 +10,24 @@ N = 1
 FUNCTION = "log(x + 2)"
 
 
+def trapezoid_method(function, a, b, subintervals, verbose=False):
+    h = (b - a) / subintervals
+    total = 0
+    rows = []
+
+    for k in range(subintervals + 1):
+        x = a + k * h
+        y = function(x)
+        weight = 1 if k == 0 or k == subintervals else 2
+        total += weight * y
+        rows.append((k, x, y, weight))
+
+    if verbose:
+        print_weighted_table(rows)
+
+    return h * total / 2
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Metodo del trapecio. Usa -n 1 para la regla simple.")
     parser.add_argument("-a", type=float, default=A, help="Extremo izquierdo del intervalo")
@@ -32,27 +50,9 @@ def parse_args():
     return args
 
 
-def trapezoid_rule(function, a, b, subintervals, verbose=False):
-    h = (b - a) / subintervals
-    total = 0
-    rows = []
-
-    for k in range(subintervals + 1):
-        x = a + k * h
-        y = function(x)
-        weight = 1 if k == 0 or k == subintervals else 2
-        total += weight * y
-        rows.append((k, x, y, weight))
-
-    if verbose:
-        print_weighted_table(rows)
-
-    return h * total / 2
-
-
 args = parse_args()
 try:
-    result = trapezoid_rule(args.function, args.a, args.b, args.subintervals, args.verbose)
+    result = trapezoid_method(args.function, args.a, args.b, args.subintervals, args.verbose)
 except Exception as exc:
     print(f"Error: {exc}", file=sys.stderr)
     sys.exit(1)

@@ -8,30 +8,7 @@ MATRIX = "2,1,-1; -3,-1,2; -2,1,2"
 VECTOR = "8,-11,-3"
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Metodo de eliminacion gaussiana con pivoteo parcial")
-    add_system_arguments(parser, MATRIX, VECTOR)
-    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra las matrices ampliadas por paso")
-    args = parser.parse_args()
-    return resolve_system_args(parser, args)
-
-
-def back_substitution(matrix, vector):
-    size = len(matrix)
-    result = [0] * size
-
-    for i in range(size - 1, -1, -1):
-        total = vector[i]
-        for j in range(i + 1, size):
-            total -= matrix[i][j] * result[j]
-        if matrix[i][i] == 0:
-            raise ValueError("el sistema no tiene solucion unica")
-        result[i] = total / matrix[i][i]
-
-    return result
-
-
-def gaussian_elimination(matrix, vector, verbose=False):
+def gaussian_elimination_method(matrix, vector, verbose=False):
     matrix = copy_matrix(matrix)
     vector = vector[:]
     size = len(matrix)
@@ -71,9 +48,32 @@ def gaussian_elimination(matrix, vector, verbose=False):
     return back_substitution(matrix, vector)
 
 
+def back_substitution(matrix, vector):
+    size = len(matrix)
+    result = [0] * size
+
+    for i in range(size - 1, -1, -1):
+        total = vector[i]
+        for j in range(i + 1, size):
+            total -= matrix[i][j] * result[j]
+        if matrix[i][i] == 0:
+            raise ValueError("el sistema no tiene solucion unica")
+        result[i] = total / matrix[i][i]
+
+    return result
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Metodo de eliminacion gaussiana con pivoteo parcial")
+    add_system_arguments(parser, MATRIX, VECTOR)
+    parser.add_argument("-v", "--verbose", action="store_true", help="Muestra las matrices ampliadas por paso")
+    args = parser.parse_args()
+    return resolve_system_args(parser, args)
+
+
 args = parse_args()
 try:
-    result = gaussian_elimination(args.matrix, args.vector, args.verbose)
+    result = gaussian_elimination_method(args.matrix, args.vector, args.verbose)
 except ValueError as exc:
     print(f"Error: {exc}", file=sys.stderr)
     sys.exit(1)

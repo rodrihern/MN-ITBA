@@ -15,6 +15,24 @@ FUNCTION = "1 + y**2"
 DERIVATIVE = None  # Optional: if None, calculated as df/dt + df/dy * f
 
 
+def taylor2_method(function, derivative, a, y0, h, iterations, verbose=False):
+    t = a
+    y = y0
+    values = [(0, t, y)]
+
+    for k in range(1, iterations + 1):
+        y = y + h * function(t, y) + h**2 / 2 * derivative(t, y)
+        t = a + k * h
+        validate_finite(y)
+        values.append((k, t, y))
+
+    if verbose:
+        print_step_table(values)
+
+    return values
+
+
+
 SYMPY_NAMES = {name: getattr(sp, name) for name in dir(sp) if not name.startswith("_")}
 SYMPY_NAMES["abs"] = sp.Abs
 
@@ -52,26 +70,12 @@ def parse_args():
     return args
 
 
-def taylor2(function, derivative, a, y0, h, iterations, verbose=False):
-    t = a
-    y = y0
-    values = [(0, t, y)]
 
-    for k in range(1, iterations + 1):
-        y = y + h * function(t, y) + h**2 / 2 * derivative(t, y)
-        t = a + k * h
-        validate_finite(y)
-        values.append((k, t, y))
-
-    if verbose:
-        print_step_table(values)
-
-    return values
 
 
 args = parse_args()
 try:
-    result = taylor2(
+    result = taylor2_method(
         args.function,
         args.derivative,
         args.a,

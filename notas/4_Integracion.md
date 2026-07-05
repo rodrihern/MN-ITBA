@@ -75,7 +75,9 @@ El **punto medio** es el más preciso de los tres (es la regla de Gauss de 1 pun
 | $k$ | $x$ | $f(x)$ |
 | --- | --- | ------ |
 |     |     |        |
+
 y al final hacer la suma
+
 ### Ejemplo
 
 $\displaystyle\int_0^1 e^x\,dx$ con $n=4$ ($h=0{,}25$), exacto $= e-1 \approx 1{,}71828$:

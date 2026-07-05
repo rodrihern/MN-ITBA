@@ -345,7 +345,7 @@ Usar siempre coma decimal en los resultados finales que se muestran al usuario (
 
 Cuando el resultado final requiera una cantidad fija de decimales, mostrar tanto el valor truncado como el redondeado. Si el enunciado pide explicitamente truncar, redondear, parte entera o coma decimal, mostrar ese como "para entregar".
 
-Al final de cada respuesta incluir un bloque fenced `text` que contenga solamente el valor final a entregar, sin etiqueta, explicacion ni unidades extra.
+El bloque `Para entregar` debe ser el unico bloque fenced `text` con el valor final. No repetir otro bloque igual al final.
 
 ## Convenciones matematicas importantes
 
